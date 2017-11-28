@@ -1,3 +1,5 @@
+package entities;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -24,7 +26,7 @@ public class Event {
         return "Event{" +
                 "id=" + id +
                 ", msg='" + msg + '\'' +
-                ", date=" + date +
+                ", date=" + dateFormat.format(date) +
                 '}';
     }
 }

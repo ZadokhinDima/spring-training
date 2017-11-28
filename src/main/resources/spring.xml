@@ -2,15 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id = "client" class="Client">
+
+    <import resource="loggers.xml"/>
+
+    <bean id = "client" class="entities.Client">
         <constructor-arg index="0" value="1"/>
         <constructor-arg index="1" value="John Smith"/>
     </bean>
-    <bean id = "eventLogger" class="ConsoleEventLogger"/>
     <bean id = "app" class="App">
         <constructor-arg ref="client"/>
-        <constructor-arg ref="eventLogger"/>
+        <constructor-arg ref="consoleLogger"/>
     </bean>
-
+    <bean id ="event" class="entities.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
+        </constructor-arg>
+    </bean>
 
 </beans>
