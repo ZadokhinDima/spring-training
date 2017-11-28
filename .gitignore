@@ -24,3 +24,7 @@ hs_err_pid*
 #IDEA files
 *.iml
 .idea/*
+pom.xml
+src/
+target/classes/spring.xml
+target/generated-sources/
