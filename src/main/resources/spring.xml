@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="
+ 		http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+ 		http://www.springframework.org/schema/util
+ 		http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
     <import resource="loggers.xml"/>
 
-    <bean id = "client" class="entities.Client">
-        <constructor-arg index="0" value="1"/>
-        <constructor-arg index="1" value="John Smith"/>
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:client.properties</value>
+            </list>
+        </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesMode" value="2"/>
     </bean>
-    <bean id = "app" class="App">
-        <constructor-arg ref="client"/>
-        <constructor-arg ref="consoleLogger"/>
-    </bean>
+
+    <util:map id="logger-map">
+        <entry key="ERROR" value-ref="combinedLogger"/>
+        <entry key="INFO" value-ref="consoleLogger"/>
+    </util:map>
+
+
+    <bean id = "client" class="entities.Client" c:id="${id}" c:fullname="${name}" p:greeting="${greeting}"/>
+
+    <bean id = "app" class="App" c:client-ref="client" c:eventLogger = "#{T(entities.Event).isDay() ? consoleLogger : fileLogger}" c:eventLoggers-ref="logger-map"/>
+
     <bean id ="event" class="entities.Event" scope="prototype">
         <constructor-arg>
             <bean class="java.util.Date"/>

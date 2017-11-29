@@ -17,7 +17,7 @@ public class FileEventLogger implements EventLogger {
     public void init() throws IOException{
         File file = new File(filename);
         if (!file.canWrite()) {
-            throw new IOException();
+
         }
     }
 

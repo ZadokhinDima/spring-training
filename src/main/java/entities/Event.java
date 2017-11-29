@@ -1,14 +1,21 @@
 package entities;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Random;
 
+@Component("event")
+@Scope("prototype")
 public class Event {
     private int id;
     private String msg;
     private Date date;
     private DateFormat dateFormat;
+    private EventType eventType;
+
 
     public Event(Date date, DateFormat dtf) {
         Random rnd = new Random();
@@ -19,6 +26,19 @@ public class Event {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType type){
+        this.eventType = type;
+    }
+
+    public static boolean isDay(){
+        Date date = new Date();
+        return date.getHours() >= 8 && date.getHours() <= 17;
     }
 
     @Override

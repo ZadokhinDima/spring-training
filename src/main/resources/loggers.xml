@@ -4,9 +4,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id = "consoleLogger" class="logger.ConsoleEventLogger"/>
     <bean id = "fileLogger" class="logger.FileEventLogger" init-method="init">
-        <constructor-arg value="log.txt"/>
+        <constructor-arg type="java.lang.String" value="log.txt"/>
     </bean>
     <bean id = "cachedLogger" class="logger.CacheFileEventLogger" destroy-method="destroy" parent="fileLogger">
         <constructor-arg value="5"/>
+    </bean>
+    <bean id = "combinedLogger" class="logger.CombinedEventLogger">
+        <constructor-arg>
+            <list>
+                <ref bean="fileLogger"/>
+                <ref bean="cachedLogger"/>
+                <ref bean="consoleLogger"/>
+            </list>
+        </constructor-arg>
     </bean>
 </beans>
